@@ -1,7 +1,11 @@
-#Set up
+#Set up (Windows)
 
  - Create a free Github.com account if you don't already have one
  - Download and install [Git](https://git-scm.com/downloads)
+     - Use Git Bash only
+     - Use MinTTY
+     - checkout as is, commit Unix-style line endings
+     - Leave checked Enable File System Caching and Git Credential Manager
  - Download and install [Git LFS](https://git-lfs.github.com/)
  - Download and install [SourceTree](https://www.sourcetreeapp.com/)
 
@@ -19,9 +23,12 @@ Next try out this nice interactive [git tutorial](https://try.github.io/levels/1
 for those visual/artistic people who like clicking buttons 
 
  - Open Sourcetree
+ - Login with your Atlassian account initially, you'll use connect your Github account next
  - File>Clone/New
  - Source Path/URL `https://github.com/years1hundred/death-gun.git`
  - Destination Path (choose the folder where you want it to go on your file system)
+ - Yes, do download binary content from Git LFS
+ - Repository>Checkout>Checkout New Branch>origin/development
  
 #Contributing (SourceTree)
 As stated in the README of this repository, all contributions should be committed on feature branches off of `development` and submitted via a pull request to merge into develop.
