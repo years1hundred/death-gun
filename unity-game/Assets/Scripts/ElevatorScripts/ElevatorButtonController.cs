@@ -1,25 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class DoorButtonRightController : MonoBehaviour {
+public class ElevatorButtonController : MonoBehaviour {
 
-    public DoorController theDoorController;
-
-    public bool nearbyRightButton;
+    public bool nearbyPlatformButton;
 
 
 
-	void Start ()
+    void Start()
     {
-	
-	}
-	
+
+    }
 
 
-	void Update ()
+
+    void Update()
     {
-	
-	}
+
+    }
 
 
 
@@ -27,7 +25,7 @@ public class DoorButtonRightController : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            nearbyRightButton = true;
+            nearbyPlatformButton = true;
         }
     }
 
@@ -37,7 +35,7 @@ public class DoorButtonRightController : MonoBehaviour {
     {
         if (other.gameObject.CompareTag("Player"))
         {
-            nearbyRightButton = false;
+            nearbyPlatformButton = false;
         }
     }
 }

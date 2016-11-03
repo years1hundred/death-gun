@@ -52,6 +52,8 @@ public class PlayerController : MonoBehaviour
     private bool interactedWithLadder;
     private bool usingDoor = false;
     private bool disableMovement;
+    private bool disableFixedUpdateMovement;
+    private bool disableUpdateMovement;
 
     public Transform groundCheck;
     public Transform tunnelCheck;
@@ -289,46 +291,49 @@ public class PlayerController : MonoBehaviour
     {
         if (!disableMovement)
         {
-            //Handles crouching
-            if (Input.GetButtonDown("Crouch"))
+            if (!disableUpdateMovement)
             {
-                myAnimator.SetBool("Crouched", true);
-                isCrouched = true;
-                holdingDownCrouch = true;
-            }
+                //Handles crouching
+                if (Input.GetButtonDown("Crouch"))
+                {
+                    myAnimator.SetBool("Crouched", true);
+                    isCrouched = true;
+                    holdingDownCrouch = true;
+                }
 
-            if (Input.GetButtonUp("Crouch"))
-            {
-                //"holdingDownCrouch" ensures that if the player is inside a tunnel and the release crouch, the player character doesn't stand in the middle of the tunnel
-                holdingDownCrouch = false;
-                if (insideTunnel == false)
+                if (Input.GetButtonUp("Crouch"))
+                {
+                    //"holdingDownCrouch" ensures that if the player is inside a tunnel and the release crouch, the player character doesn't stand in the middle of the tunnel
+                    holdingDownCrouch = false;
+                    if (insideTunnel == false)
+                    {
+                        myAnimator.SetBool("Crouched", false);
+                        isCrouched = false;
+                    }
+                }
+
+                if (holdingDownCrouch == false && insideTunnel == false)
                 {
                     myAnimator.SetBool("Crouched", false);
                     isCrouched = false;
                 }
-            }
-
-            if (holdingDownCrouch == false && insideTunnel == false)
-            {
-                myAnimator.SetBool("Crouched", false);
-                isCrouched = false;
-            }
 
 
-            if (Input.GetButtonDown("Submit"))
-            {
-                usingDoor = true;
-            }
+                if (Input.GetButtonDown("Submit"))
+                {
+                    usingDoor = true;
+                }
 
 
-            if (sprint)
-            {
-                myAnimator.SetBool("Sprinting", true);
-            }
+                if (sprint)
+                {
+                    myAnimator.SetBool("Sprinting", true);
+                }
 
-            if (!sprint)
-            {
-                myAnimator.SetBool("Sprinting", false);
+                if (!sprint)
+                {
+                    myAnimator.SetBool("Sprinting", false);
+                }
             }
         }
     }
@@ -339,70 +344,73 @@ public class PlayerController : MonoBehaviour
     {
         if (!disableMovement)
         {
-            //Handles normal walking movement
-            if (Input.GetAxisRaw("Horizontal") > 0f)
+            if (!disableFixedUpdateMovement)
             {
-                myRigidbody.velocity = new Vector3(moveSpeed, myRigidbody.velocity.y, 0f);
-                transform.localScale = new Vector3(1f, 1f, 1f);
-            }
-            else if (Input.GetAxisRaw("Horizontal") < 0f)
-            {
-                myRigidbody.velocity = new Vector3(-moveSpeed, myRigidbody.velocity.y, 0f);
-                transform.localScale = new Vector3(-1f, 1f, 1f);
-            }
-            else
-            {
-                myRigidbody.velocity = new Vector3(0f, myRigidbody.velocity.y, 0f);
-            }
+                //Handles normal walking movement
+                if (Input.GetAxisRaw("Horizontal") > 0f)
+                {
+                    myRigidbody.velocity = new Vector3(moveSpeed, myRigidbody.velocity.y, 0f);
+                    transform.localScale = new Vector3(1f, 1f, 1f);
+                }
+                else if (Input.GetAxisRaw("Horizontal") < 0f)
+                {
+                    myRigidbody.velocity = new Vector3(-moveSpeed, myRigidbody.velocity.y, 0f);
+                    transform.localScale = new Vector3(-1f, 1f, 1f);
+                }
+                else
+                {
+                    myRigidbody.velocity = new Vector3(0f, myRigidbody.velocity.y, 0f);
+                }
 
 
-            //Handles sprint movement
-            if (Input.GetAxisRaw("Horizontal") > 0f && sprint)
-            {
-                myRigidbody.velocity = new Vector3(sprintSpeed, myRigidbody.velocity.y, 0f);
-                transform.localScale = new Vector3(1f, 1f, 1f);
-            }
-            else if (Input.GetAxisRaw("Horizontal") < 0f && sprint)
-            {
-                myRigidbody.velocity = new Vector3(-sprintSpeed, myRigidbody.velocity.y, 0f);
-                transform.localScale = new Vector3(-1f, 1f, 1f);
-            }
+                //Handles sprint movement
+                if (Input.GetAxisRaw("Horizontal") > 0f && sprint)
+                {
+                    myRigidbody.velocity = new Vector3(sprintSpeed, myRigidbody.velocity.y, 0f);
+                    transform.localScale = new Vector3(1f, 1f, 1f);
+                }
+                else if (Input.GetAxisRaw("Horizontal") < 0f && sprint)
+                {
+                    myRigidbody.velocity = new Vector3(-sprintSpeed, myRigidbody.velocity.y, 0f);
+                    transform.localScale = new Vector3(-1f, 1f, 1f);
+                }
 
 
-            //Handles normal crouching movement
-            if (Input.GetAxisRaw("Horizontal") > 0f && isCrouched)
-            {
-                myRigidbody.velocity = new Vector3(crouchSpeed, myRigidbody.velocity.y, 0f);
-                transform.localScale = new Vector3(1f, 1f, 1f);
-            }
-            else if (Input.GetAxisRaw("Horizontal") < 0f && isCrouched)
-            {
-                myRigidbody.velocity = new Vector3(-crouchSpeed, myRigidbody.velocity.y, 0f);
-                transform.localScale = new Vector3(-1f, 1f, 1f);
-            }
+                //Handles normal crouching movement
+                if (Input.GetAxisRaw("Horizontal") > 0f && isCrouched)
+                {
+                    myRigidbody.velocity = new Vector3(crouchSpeed, myRigidbody.velocity.y, 0f);
+                    transform.localScale = new Vector3(1f, 1f, 1f);
+                }
+                else if (Input.GetAxisRaw("Horizontal") < 0f && isCrouched)
+                {
+                    myRigidbody.velocity = new Vector3(-crouchSpeed, myRigidbody.velocity.y, 0f);
+                    transform.localScale = new Vector3(-1f, 1f, 1f);
+                }
 
 
-            //Handles movement while in water
-            if (Input.GetAxisRaw("Horizontal") > 0f && insideWater)
-            {
-                myRigidbody.velocity = new Vector3(moveSpeed * waterSpeed, myRigidbody.velocity.y, 0f);
-                transform.localScale = new Vector3(1f, 1f, 1f);
-            }
-            else if (Input.GetAxisRaw("Horizontal") < 0f && insideWater)
-            {
-                myRigidbody.velocity = new Vector3(-moveSpeed * waterSpeed, myRigidbody.velocity.y, 0f);
-                transform.localScale = new Vector3(-1f, 1f, 1f);
-            }
+                //Handles movement while in water
+                if (Input.GetAxisRaw("Horizontal") > 0f && insideWater)
+                {
+                    myRigidbody.velocity = new Vector3(moveSpeed * waterSpeed, myRigidbody.velocity.y, 0f);
+                    transform.localScale = new Vector3(1f, 1f, 1f);
+                }
+                else if (Input.GetAxisRaw("Horizontal") < 0f && insideWater)
+                {
+                    myRigidbody.velocity = new Vector3(-moveSpeed * waterSpeed, myRigidbody.velocity.y, 0f);
+                    transform.localScale = new Vector3(-1f, 1f, 1f);
+                }
 
-            if (Input.GetAxisRaw("Horizontal") > 0f && isCrouched && insideWater)
-            {
-                myRigidbody.velocity = new Vector3(crouchSpeed * waterSpeed, myRigidbody.velocity.y, 0f);
-                transform.localScale = new Vector3(1f, 1f, 1f);
-            }
-            else if (Input.GetAxisRaw("Horizontal") < 0f && isCrouched && insideWater)
-            {
-                myRigidbody.velocity = new Vector3(-crouchSpeed * waterSpeed, myRigidbody.velocity.y, 0f);
-                transform.localScale = new Vector3(-1f, 1f, 1f);
+                if (Input.GetAxisRaw("Horizontal") > 0f && isCrouched && insideWater)
+                {
+                    myRigidbody.velocity = new Vector3(crouchSpeed * waterSpeed, myRigidbody.velocity.y, 0f);
+                    transform.localScale = new Vector3(1f, 1f, 1f);
+                }
+                else if (Input.GetAxisRaw("Horizontal") < 0f && isCrouched && insideWater)
+                {
+                    myRigidbody.velocity = new Vector3(-crouchSpeed * waterSpeed, myRigidbody.velocity.y, 0f);
+                    transform.localScale = new Vector3(-1f, 1f, 1f);
+                }
             }
         }
     }
@@ -533,7 +541,27 @@ public class PlayerController : MonoBehaviour
 
 
 
-    public void SetCollidersForSprite(int spriteNum)
+    void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.tag == "MovingPlatform")
+        {
+            transform.parent = other.transform;
+        }
+    }
+
+
+
+    void OnCollisionExit2D(Collision2D other)
+{
+    if (other.gameObject.tag == "MovingPlatform")
+    {
+        transform.parent = null;
+    }
+}
+
+
+
+public void SetCollidersForSprite(int spriteNum)
     {
         if (!usingDoor)
         {
