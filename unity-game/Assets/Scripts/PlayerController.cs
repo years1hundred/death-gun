@@ -51,6 +51,7 @@ public class PlayerController : MonoBehaviour
     private bool ladderZone;
     private bool interactedWithLadder;
     private bool usingDoor = false;
+	private bool usingRamp = false;
     private bool disableMovement;
 
     public Transform groundCheck;
@@ -157,6 +158,7 @@ public class PlayerController : MonoBehaviour
 
         if (!onLadder)
         {
+			
             if (!usingDoor)
             {
                 //handles basic horizontal movement for the player on normal ground
@@ -277,10 +279,57 @@ public class PlayerController : MonoBehaviour
         {
             if (!usingDoor)
             {
-                //handles basic horizontal movement for the player on normal ground
-                BasicFixedUpdateMovement();
-            }
+				if (!usingRamp) {
+					//handles basic horizontal movement for the player on normal ground
+					BasicFixedUpdateMovement ();
+				}
+            
+			}
         }
+		if (usingRamp) {
+			if (Input.GetAxisRaw("Horizontal") > 0f)
+			{
+				myRigidbody.velocity = new Vector3(moveSpeed, moveSpeed, 0f);
+				transform.localScale = new Vector3(1f, 1f, 1f);
+			}
+			else if (Input.GetAxisRaw("Horizontal") < 0f)
+			{
+				myRigidbody.velocity = new Vector3(-moveSpeed, -moveSpeed, 0f);
+				transform.localScale = new Vector3(-1f, 1f, 1f);
+			}
+			else
+			{
+				myRigidbody.velocity = new Vector3(0f, 0f, 0f);
+			}
+
+
+			//Handles sprint movement
+			if (Input.GetAxisRaw("Horizontal") > 0f && sprint)
+			{
+				myRigidbody.velocity = new Vector3(sprintSpeed, sprintSpeed, 0f);
+				transform.localScale = new Vector3(1f, 1f, 1f);
+			}
+			else if (Input.GetAxisRaw("Horizontal") < 0f && sprint)
+			{
+				myRigidbody.velocity = new Vector3(-sprintSpeed, -sprintSpeed, 0f);
+				transform.localScale = new Vector3(-1f, 1f, 1f);
+			}
+
+
+			//Handles normal crouching movement
+			if (Input.GetAxisRaw("Horizontal") > 0f && isCrouched)
+			{
+				myRigidbody.velocity = new Vector3(crouchSpeed, crouchSpeed, 0f);
+				transform.localScale = new Vector3(1f, 1f, 1f);
+			}
+			else if (Input.GetAxisRaw("Horizontal") < 0f && isCrouched)
+			{
+				myRigidbody.velocity = new Vector3(-crouchSpeed, -crouchSpeed, 0f);
+				transform.localScale = new Vector3(-1f, 1f, 1f);
+			}
+
+
+		}
     }
 
 
@@ -543,4 +592,27 @@ public class PlayerController : MonoBehaviour
             colliders[currentColliderIndex].enabled = true;
         }
     }
+
+
+	//ramp managers
+	public void enterRamp(){
+	myRigidbody.velocity = new Vector3 (0f, 0f, 0f);
+		usingRamp = true;
+		myRigidbody.gravityScale = 0;
+	}
+
+	public void exitRamp(){
+		//myRigidbody.velocity = new Vector3 (0f, 0f, 0f);
+		usingRamp = false;
+		myRigidbody.gravityScale = 1;
+	}
+	//for when you reach the end of a ramp
+	public void endRamp(){
+		myRigidbody.velocity = new Vector3 (0f, -moveSpeed, 0f);
+		usingRamp = false;
+		myRigidbody.gravityScale = 1;
+	}
+	public bool getUsingRamp(){
+		return usingRamp;
+	}
 }
