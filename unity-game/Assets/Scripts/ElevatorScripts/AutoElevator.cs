@@ -173,6 +173,8 @@ public class AutoElevator : MonoBehaviour
 
         if (!notMoving)
         {
+            theLeftWall.SetActive(true);
+            theRightWall.SetActive(true);
             if (theStartPoint.gameObject.GetComponent<ElevatorBookends>().startLeftBarrier == true)
             {
                 theStartLeftBarrier.SetActive(true);
@@ -212,8 +214,6 @@ public class AutoElevator : MonoBehaviour
         if (waitCounter < 0f)
         {
             notMoving = false;
-            theLeftWall.SetActive(true);
-            theRightWall.SetActive(true);
             objectToMove.transform.position = Vector3.MoveTowards(objectToMove.transform.position, currentTarget, moveSpeed * Time.deltaTime);
         }
     }
