@@ -3,12 +3,12 @@ using System.Collections;
 
 public class AutoElevator : MonoBehaviour
 {
-    public bool notMoving;
+    public bool currentlyMoving;
     public bool reachedDestination;
     public bool onStartPoint;
     public bool onEndPoint;
 
-    public GameObject objectToMove;
+    public GameObject elevatorObject;
     public GameObject theRightWall;
     public GameObject theLeftWall;
     public GameObject theStartLeftBarrier;
@@ -28,7 +28,7 @@ public class AutoElevator : MonoBehaviour
     private Vector3 currentTarget;
 
 
-    void Start()
+    void Awake()
     {
         currentTarget = endPoint.position;
 
@@ -44,9 +44,16 @@ public class AutoElevator : MonoBehaviour
 
 
 
+    void Start()
+    {
+
+    }
+
+
+
     void Update()
     {     
-        if (objectToMove.transform.position == endPoint.position)
+        if (elevatorObject.transform.position == endPoint.position)
         {
             onStartPoint = false;
             onEndPoint = true;
@@ -58,7 +65,7 @@ public class AutoElevator : MonoBehaviour
                 theEndLeftBarrier.SetActive(false);
                 theEndRightBarrier.SetActive(false);
             }
-            notMoving = true;
+            currentlyMoving = false;
             currentTarget = startPoint.position;
             if (theEndPoint.gameObject.GetComponent<ElevatorBookends>().leftWall == true)
             {
@@ -78,7 +85,7 @@ public class AutoElevator : MonoBehaviour
             }
         }
 
-        if (objectToMove.transform.position == startPoint.position)
+        if (elevatorObject.transform.position == startPoint.position)
         {
             onEndPoint = false;
             onStartPoint = true;
@@ -90,7 +97,7 @@ public class AutoElevator : MonoBehaviour
                 theEndLeftBarrier.SetActive(false);
                 theEndRightBarrier.SetActive(false);
             }
-            notMoving = true;
+            currentlyMoving = false;
             currentTarget = endPoint.position;
             if (theStartPoint.gameObject.GetComponent<ElevatorBookends>().leftWall == true)
             {
@@ -164,14 +171,14 @@ public class AutoElevator : MonoBehaviour
 
 
 
-        if (notMoving)
+        if (!currentlyMoving)
         {
-            waitCounter -= Time.deltaTime;
+            waitCounter -= Time.fixedDeltaTime;
         }
 
 
 
-        if (!notMoving)
+        if (currentlyMoving)
         {
             theLeftWall.SetActive(true);
             theRightWall.SetActive(true);
@@ -213,8 +220,8 @@ public class AutoElevator : MonoBehaviour
 
         if (waitCounter < 0f)
         {
-            notMoving = false;
-            objectToMove.transform.position = Vector3.MoveTowards(objectToMove.transform.position, currentTarget, moveSpeed * Time.deltaTime);
+            currentlyMoving = true;
+            elevatorObject.transform.position = Vector3.MoveTowards(elevatorObject.transform.position, currentTarget, moveSpeed * Time.fixedDeltaTime);
         }
     }
 }

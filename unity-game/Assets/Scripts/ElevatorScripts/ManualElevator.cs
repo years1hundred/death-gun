@@ -4,14 +4,15 @@ using System.Collections;
 public class ManualElevator : MonoBehaviour {
 
     public ElevatorButtonController theElevatorButtonController;
+    public PlayerController thePlayerControllerScript;
 
-    public bool notMoving;
+    public bool currentlyMoving;
     public bool nearbyButton;
     public bool reachedDestination;
     public bool onStartPoint;
     public bool onEndPoint;
 
-    public GameObject objectToMove;
+    public GameObject elevatorObject;
     public GameObject theRightWall;
     public GameObject theLeftWall;
     public GameObject theStartLeftBarrier;
@@ -30,11 +31,12 @@ public class ManualElevator : MonoBehaviour {
     private Vector3 currentTarget;
 
 
-    void Start()
+
+    void Awake()
     {
         currentTarget = endPoint.position;
         readyTimer = .5f;
-        notMoving = true;
+        currentlyMoving = false;
 
         theLeftWall.SetActive(false);
         theRightWall.SetActive(false);
@@ -46,19 +48,25 @@ public class ManualElevator : MonoBehaviour {
 
 
 
+    void Start()
+    {
+
+    }
+
+
+
     void Update()
     {
         nearbyButton = theElevatorButtonController.GetComponent<ElevatorButtonController>().nearbyPlatformButton;
+        
 
-
-
-        if (objectToMove.transform.position == endPoint.position)
+        if (elevatorObject.transform.position == endPoint.position)
         {
             onStartPoint = false;
             onEndPoint = true;
             if (readyTimer == 0f)
             {
-                notMoving = true;
+                currentlyMoving = false;
                 reachedDestination = true;
                 theStartLeftBarrier.SetActive(false);
                 theStartRightBarrier.SetActive(false);
@@ -85,13 +93,13 @@ public class ManualElevator : MonoBehaviour {
             }
         }
 
-        if (objectToMove.transform.position == startPoint.position)
+        if (elevatorObject.transform.position == startPoint.position)
         {
             onEndPoint = false;
             onStartPoint = true;
             if (readyTimer == 0f)
             {
-                notMoving = true;
+                currentlyMoving = false;
                 reachedDestination = true;
                 theStartLeftBarrier.SetActive(false);
                 theStartRightBarrier.SetActive(false);
@@ -172,10 +180,10 @@ public class ManualElevator : MonoBehaviour {
 
 
 
-        if (!notMoving)
+        if (currentlyMoving)
         {
             //readyTimer -= Time.deltaTime;
-            objectToMove.transform.position = Vector3.MoveTowards(objectToMove.transform.position, currentTarget, moveSpeed * Time.deltaTime);
+            elevatorObject.transform.position = Vector3.MoveTowards(elevatorObject.transform.position, currentTarget, moveSpeed * Time.deltaTime);
             readyTimer = 0f;
             theLeftWall.SetActive(true);
             theRightWall.SetActive(true);
@@ -217,9 +225,12 @@ public class ManualElevator : MonoBehaviour {
 
         if (readyTimer == .5f)
         {
-            if (Input.GetButtonDown("Interact"))
+            if (nearbyButton)
             {
-                notMoving = false;
+                if (Input.GetButtonDown("Interact"))
+                {
+                    currentlyMoving = true;
+                }
             }
         }
     }
