@@ -13,12 +13,12 @@ public class ManualElevator : MonoBehaviour {
     public bool onEndPoint;
 
     public GameObject elevatorObject;
-    public GameObject theRightWall;
-    public GameObject theLeftWall;
-    public GameObject theStartLeftBarrier;
-    public GameObject theStartRightBarrier;
-    public GameObject theEndLeftBarrier;
-    public GameObject theEndRightBarrier;
+    public GameObject rightWall;
+    public GameObject leftWall;
+    public GameObject startLeftBarrier;
+    public GameObject startRightBarrier;
+    public GameObject endLeftBarrier;
+    public GameObject endRightBarrier;
     public GameObject startPoint;
     public GameObject endPoint;
 
@@ -35,12 +35,12 @@ public class ManualElevator : MonoBehaviour {
         readyTimer = .5f;
         currentlyMoving = false;
 
-        theLeftWall.SetActive(false);
-        theRightWall.SetActive(false);
-        theStartLeftBarrier.SetActive(false);
-        theStartRightBarrier.SetActive(false);
-        theEndLeftBarrier.SetActive(false);
-        theEndRightBarrier.SetActive(false);
+        leftWall.SetActive(false);
+        rightWall.SetActive(false);
+        startLeftBarrier.SetActive(false);
+        startRightBarrier.SetActive(false);
+        endLeftBarrier.SetActive(false);
+        endRightBarrier.SetActive(false);
     }
 
 
@@ -65,28 +65,28 @@ public class ManualElevator : MonoBehaviour {
             {
                 currentlyMoving = false;
                 reachedDestination = true;
-                theStartLeftBarrier.SetActive(false);
-                theStartRightBarrier.SetActive(false);
-                theEndLeftBarrier.SetActive(false);
-                theEndRightBarrier.SetActive(false);
+                startLeftBarrier.SetActive(false);
+                startRightBarrier.SetActive(false);
+                endLeftBarrier.SetActive(false);
+                endRightBarrier.SetActive(false);
             }            
             currentTarget = startPoint.transform.position;
             //firstLeftBarrier.SetActive(false);
             if (endPoint.gameObject.GetComponent<ElevatorBookends>().leftWall == true)
             {
-                theLeftWall.SetActive(true);
+                leftWall.SetActive(true);
             }
             else if (endPoint.gameObject.GetComponent<ElevatorBookends>().leftWall == false)
             {
-                theLeftWall.SetActive(false);
+                leftWall.SetActive(false);
             }
             if (endPoint.gameObject.GetComponent<ElevatorBookends>().rightWall == true)
             {
-                theRightWall.SetActive(true);
+                rightWall.SetActive(true);
             }
             else if (endPoint.gameObject.GetComponent<ElevatorBookends>().rightWall == false)
             {
-                theRightWall.SetActive(false);
+                rightWall.SetActive(false);
             }
         }
 
@@ -98,28 +98,28 @@ public class ManualElevator : MonoBehaviour {
             {
                 currentlyMoving = false;
                 reachedDestination = true;
-                theStartLeftBarrier.SetActive(false);
-                theStartRightBarrier.SetActive(false);
-                theEndLeftBarrier.SetActive(false);
-                theEndRightBarrier.SetActive(false);
+                startLeftBarrier.SetActive(false);
+                startRightBarrier.SetActive(false);
+                endLeftBarrier.SetActive(false);
+                endRightBarrier.SetActive(false);
             }
             currentTarget = endPoint.transform.position;
             //firstRightBarrier.SetActive(false);
             if (startPoint.gameObject.GetComponent<ElevatorBookends>().leftWall == true)
             {
-                theLeftWall.SetActive(true);
+                leftWall.SetActive(true);
             }
             else if (startPoint.gameObject.GetComponent<ElevatorBookends>().leftWall == false)
             {
-                theLeftWall.SetActive(false);
+                leftWall.SetActive(false);
             }
             if (startPoint.gameObject.GetComponent<ElevatorBookends>().rightWall == true)
             {
-                theRightWall.SetActive(true);
+                rightWall.SetActive(true);
             }
             else if (startPoint.gameObject.GetComponent<ElevatorBookends>().rightWall == false)
             {
-                theRightWall.SetActive(false);
+                rightWall.SetActive(false);
             }
         }
 
@@ -129,19 +129,19 @@ public class ManualElevator : MonoBehaviour {
         {
             if (endPoint.gameObject.GetComponent<ElevatorBookends>().endLeftBarrier == true)
             {
-                theEndLeftBarrier.SetActive(true);
+                endLeftBarrier.SetActive(true);
             }
             else if (endPoint.gameObject.GetComponent<ElevatorBookends>().endLeftBarrier == false)
             {
-                theEndLeftBarrier.SetActive(false);
+                endLeftBarrier.SetActive(false);
             }
             if (endPoint.gameObject.GetComponent<ElevatorBookends>().endRightBarrier == true)
             {
-                theEndRightBarrier.SetActive(true);
+                endRightBarrier.SetActive(true);
             }
             else if (endPoint.gameObject.GetComponent<ElevatorBookends>().endRightBarrier == false)
             {
-                theEndRightBarrier.SetActive(false);
+                endRightBarrier.SetActive(false);
             }
         }
 
@@ -151,19 +151,19 @@ public class ManualElevator : MonoBehaviour {
         {
             if (startPoint.gameObject.GetComponent<ElevatorBookends>().startLeftBarrier == true)
             {
-                theStartLeftBarrier.SetActive(true);
+                startLeftBarrier.SetActive(true);
             }
             else if (startPoint.gameObject.GetComponent<ElevatorBookends>().startLeftBarrier == false)
             {
-                theStartLeftBarrier.SetActive(false);
+                startLeftBarrier.SetActive(false);
             }
             if (startPoint.gameObject.GetComponent<ElevatorBookends>().startRightBarrier == true)
             {
-                theStartRightBarrier.SetActive(true);
+                startRightBarrier.SetActive(true);
             }
             else if (startPoint.gameObject.GetComponent<ElevatorBookends>().startRightBarrier == false)
             {
-                theStartRightBarrier.SetActive(false);
+                startRightBarrier.SetActive(false);
             }
         }
 
@@ -182,39 +182,39 @@ public class ManualElevator : MonoBehaviour {
             //readyTimer -= Time.deltaTime;
             elevatorObject.transform.position = Vector3.MoveTowards(elevatorObject.transform.position, currentTarget, moveSpeed * Time.deltaTime);
             readyTimer = 0f;
-            theLeftWall.SetActive(true);
-            theRightWall.SetActive(true);
+            leftWall.SetActive(true);
+            rightWall.SetActive(true);
             if (startPoint.gameObject.GetComponent<ElevatorBookends>().startLeftBarrier == true)
             {
-                theStartLeftBarrier.SetActive(true);
+                startLeftBarrier.SetActive(true);
             }
             else if (startPoint.gameObject.GetComponent<ElevatorBookends>().startLeftBarrier == false)
             {
-                theStartLeftBarrier.SetActive(false);
+                startLeftBarrier.SetActive(false);
             }
             if (startPoint.gameObject.GetComponent<ElevatorBookends>().startRightBarrier == true)
             {
-                theStartRightBarrier.SetActive(true);
+                startRightBarrier.SetActive(true);
             }
             else if (startPoint.gameObject.GetComponent<ElevatorBookends>().startRightBarrier == false)
             {
-                theStartRightBarrier.SetActive(false);
+                startRightBarrier.SetActive(false);
             }
             if (endPoint.gameObject.GetComponent<ElevatorBookends>().endLeftBarrier == true)
             {
-                theEndLeftBarrier.SetActive(true);
+                endLeftBarrier.SetActive(true);
             }
             else if (endPoint.gameObject.GetComponent<ElevatorBookends>().endLeftBarrier == false)
             {
-                theEndLeftBarrier.SetActive(false);
+                endLeftBarrier.SetActive(false);
             }
             if (endPoint.gameObject.GetComponent<ElevatorBookends>().endRightBarrier == true)
             {
-                theEndRightBarrier.SetActive(true);
+                endRightBarrier.SetActive(true);
             }
             else if (endPoint.gameObject.GetComponent<ElevatorBookends>().endRightBarrier == false)
             {
-                theEndRightBarrier.SetActive(false);
+                endRightBarrier.SetActive(false);
             }
         }
 
